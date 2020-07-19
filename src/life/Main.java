@@ -3,9 +3,9 @@ package life;
 import java.util.Random;
 import java.util.Scanner;
 
-
 public class Main {
 	static Scanner scanner = new Scanner(System.in);
+	static int gen = 1;
 	
 	public static void main(String []args) {
 		int n = scanner.nextInt();
@@ -25,9 +25,10 @@ public class Main {
 					arr[i][j] = " ";
 			}
 		}
-		
-		showCube(generationXth(arr, m));
+		showCube(arr);
+		generationXth(arr, m);
 	}
+	
 	static String[][] nextGeneration(String[][] arr) {
 		int n = arr.length;
 		String nextArr[][] = new String[n][n];
@@ -58,20 +59,41 @@ public class Main {
 					nextArr[i][j] = " ";
 			}
 		}
+		showCube(nextArr);
 		return nextArr;
 	}
 	static void showCube(String[][] arr) {
+		System.out.println("Generation #" + gen);
+		System.out.println("Alive: " + alive(arr));
+		
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr.length; j++) {
 				System.out.print(arr[i][j]);
 			}
 			System.out.println();
 		}
+		
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {}
+		gen++;
+		System.out.println();
 	}
 	static String[][] generationXth(String[][] arr, int m) {
 		if (m == 0)
 			return arr;
-		else
+		else {
 			return generationXth(nextGeneration(arr), m - 1);
+		}
+	}
+	static int alive(String[][] arr) {
+		int n = 0;
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = 0; j < arr.length; j++) {
+				if (arr[i][j].equals("O"))
+					n++;
+			}
+		}
+		return n;
 	}
 }
